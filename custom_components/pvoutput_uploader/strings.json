@@ -1,0 +1,44 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "PVOutput Uploader",
+        "description": "Configure your PVOutput system upload.",
+        "data": {
+          "name": "Name (e.g. Garage or Dach)",
+          "api_key": "PVOutput API Key",
+          "system_id": "PVOutput System ID",
+          "power_entity": "Entity: Current Power (W)",
+          "energy_entity": "Entity: Daily Energy (Wh)",
+          "temperature_entity": "Entity: Temperature (°C, optional)",
+          "upload_interval": "Upload interval (minutes)",
+          "start_time": "Upload start time (HH:MM)",
+          "end_time": "Upload end time (HH:MM)"
+        }
+      }
+    },
+    "error": {
+      "invalid_api_key": "Invalid API Key or System ID",
+      "cannot_connect": "Cannot connect to PVOutput",
+      "invalid_entity": "One or more entities not found in Home Assistant"
+    },
+    "abort": {
+      "already_configured": "This PVOutput system is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "PVOutput Uploader Options",
+        "data": {
+          "power_entity": "Entity: Current Power (W)",
+          "energy_entity": "Entity: Daily Energy (Wh)",
+          "temperature_entity": "Entity: Temperature (°C, optional)",
+          "upload_interval": "Upload interval (minutes)",
+          "start_time": "Upload start time (HH:MM)",
+          "end_time": "Upload end time (HH:MM)"
+        }
+      }
+    }
+  }
+}

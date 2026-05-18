@@ -1,0 +1,12 @@
+{
+  "domain": "pvoutput_uploader",
+  "name": "PVOutput Uploader",
+  "version": "1.0.0",
+  "documentation": "https://github.com/adahmen/ha-pvoutput-uploader",
+  "issue_tracker": "https://github.com/adahmen/ha-pvoutput-uploader/issues",
+  "dependencies": [],
+  "codeowners": ["@adahmen"],
+  "requirements": [],
+  "iot_class": "cloud_push",
+  "config_flow": true
+}

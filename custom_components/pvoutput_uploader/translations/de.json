@@ -1,0 +1,44 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "PVOutput Uploader",
+        "description": "Konfiguriere deinen PVOutput-System-Upload. Du kannst mehrere Einträge für mehrere Systeme hinzufügen.",
+        "data": {
+          "name": "Name (z.B. Garage oder Dach)",
+          "api_key": "PVOutput API-Schlüssel",
+          "system_id": "PVOutput System-ID",
+          "power_entity": "Entität: Aktuelle Leistung (W)",
+          "energy_entity": "Entität: Tagesertrag (Wh)",
+          "temperature_entity": "Entität: Temperatur (°C, optional)",
+          "upload_interval": "Upload-Intervall (Minuten)",
+          "start_time": "Upload-Startzeit (HH:MM)",
+          "end_time": "Upload-Endzeit (HH:MM)"
+        }
+      }
+    },
+    "error": {
+      "invalid_api_key": "Ungültiger API-Schlüssel oder System-ID",
+      "cannot_connect": "Verbindung zu PVOutput nicht möglich",
+      "invalid_entity": "Eine oder mehrere Entitäten nicht gefunden"
+    },
+    "abort": {
+      "already_configured": "Diese PVOutput System-ID ist bereits konfiguriert"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "PVOutput Uploader Optionen",
+        "data": {
+          "power_entity": "Entität: Aktuelle Leistung (W)",
+          "energy_entity": "Entität: Tagesertrag (Wh)",
+          "temperature_entity": "Entität: Temperatur (°C, optional)",
+          "upload_interval": "Upload-Intervall (Minuten)",
+          "start_time": "Upload-Startzeit (HH:MM)",
+          "end_time": "Upload-Endzeit (HH:MM)"
+        }
+      }
+    }
+  }
+}
