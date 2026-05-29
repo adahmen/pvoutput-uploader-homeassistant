@@ -91,8 +91,8 @@ class PVOutputUploader:
 
         return start <= now <= end
 
-    def _get_state_float(self, entity_id: str) -> float | None:
-        """Get numeric state of an entity."""
+    def _get_state_float(self, entity_id: str, convert_to_wh: bool = False) -> float | None:
+        """Get numeric state of an entity, optionally converting kWh to Wh."""
         if not entity_id:
             return None
         state = self.hass.states.get(entity_id)
@@ -100,7 +100,13 @@ class PVOutputUploader:
             _LOGGER.debug("Entity %s unavailable or unknown", entity_id)
             return None
         try:
-            return float(state.state)
+            value = float(state.state)
+            if convert_to_wh:
+                unit = state.attributes.get("unit_of_measurement", "")
+                if unit.lower() == "kwh":
+                    value = value * 1000
+                    _LOGGER.debug("Converted %s from kWh to Wh: %s", entity_id, value)
+            return value
         except (ValueError, TypeError):
             _LOGGER.warning("Cannot convert state of %s to float: %s", entity_id, state.state)
             return None
@@ -118,7 +124,7 @@ class PVOutputUploader:
         temperature_entity = self.config.get(CONF_TEMPERATURE_ENTITY, "")
 
         power = self._get_state_float(power_entity)
-        energy = self._get_state_float(energy_entity)
+        energy = self._get_state_float(energy_entity, convert_to_wh=True)
         temperature = self._get_state_float(temperature_entity)
 
         if power is None or energy is None:
