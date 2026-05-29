@@ -120,9 +120,6 @@ class PVOutputUploaderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class PVOutputUploaderOptionsFlow(config_entries.OptionsFlow):
     """Handle options for PVOutput Uploader."""
 
-    def __init__(self, config_entry):
-        self.config_entry = config_entry
-
     async def async_step_init(self, user_input=None):
         """Handle options step."""
         if user_input is not None:
