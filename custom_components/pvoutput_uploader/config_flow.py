@@ -23,69 +23,6 @@ from .const import (
 )
 
 
-def _build_schema(defaults: dict = {}) -> vol.Schema:
-    return vol.Schema(
-        {
-            vol.Required(CONF_NAME, default=defaults.get(CONF_NAME, "")): str,
-            vol.Required(CONF_API_KEY, default=defaults.get(CONF_API_KEY, "")): str,
-            vol.Required(CONF_SYSTEM_ID, default=defaults.get(CONF_SYSTEM_ID, "")): str,
-            vol.Required(CONF_POWER_ENTITY, default=defaults.get(CONF_POWER_ENTITY, "")): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain=["sensor"])
-            ),
-            vol.Required(CONF_ENERGY_ENTITY, default=defaults.get(CONF_ENERGY_ENTITY, "")): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain=["sensor"])
-            ),
-            vol.Optional(CONF_TEMPERATURE_ENTITY): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain=["sensor"])
-            ),
-            vol.Optional(
-                CONF_UPLOAD_INTERVAL,
-                default=defaults.get(CONF_UPLOAD_INTERVAL, DEFAULT_UPLOAD_INTERVAL),
-            ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=5, max=60, step=5, mode="box")
-            ),
-            vol.Optional(
-                CONF_START_TIME,
-                default=defaults.get(CONF_START_TIME, DEFAULT_START_TIME),
-            ): str,
-            vol.Optional(
-                CONF_END_TIME,
-                default=defaults.get(CONF_END_TIME, DEFAULT_END_TIME),
-            ): str,
-        }
-    )
-
-
-def _options_schema(defaults: dict = {}) -> vol.Schema:
-    return vol.Schema(
-        {
-            vol.Required(CONF_POWER_ENTITY, default=defaults.get(CONF_POWER_ENTITY, "")): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain=["sensor"])
-            ),
-            vol.Required(CONF_ENERGY_ENTITY, default=defaults.get(CONF_ENERGY_ENTITY, "")): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain=["sensor"])
-            ),
-            vol.Optional(CONF_TEMPERATURE_ENTITY): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain=["sensor"])
-            ),
-            vol.Optional(
-                CONF_UPLOAD_INTERVAL,
-                default=defaults.get(CONF_UPLOAD_INTERVAL, DEFAULT_UPLOAD_INTERVAL),
-            ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=5, max=60, step=5, mode="box")
-            ),
-            vol.Optional(
-                CONF_START_TIME,
-                default=defaults.get(CONF_START_TIME, DEFAULT_START_TIME),
-            ): str,
-            vol.Optional(
-                CONF_END_TIME,
-                default=defaults.get(CONF_END_TIME, DEFAULT_END_TIME),
-            ): str,
-        }
-    )
-
-
 class PVOutputUploaderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for PVOutput Uploader."""
 
@@ -99,7 +36,6 @@ class PVOutputUploaderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             unique_id = f"{user_input[CONF_SYSTEM_ID]}"
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
-
             return self.async_create_entry(
                 title=user_input[CONF_NAME],
                 data=user_input,
@@ -107,7 +43,25 @@ class PVOutputUploaderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="user",
-            data_schema=_build_schema(),
+            data_schema=vol.Schema({
+                vol.Required(CONF_NAME): str,
+                vol.Required(CONF_API_KEY): str,
+                vol.Required(CONF_SYSTEM_ID): str,
+                vol.Required(CONF_POWER_ENTITY): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor"])
+                ),
+                vol.Required(CONF_ENERGY_ENTITY): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor"])
+                ),
+                vol.Optional(CONF_TEMPERATURE_ENTITY): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor"])
+                ),
+                vol.Optional(CONF_UPLOAD_INTERVAL, default=DEFAULT_UPLOAD_INTERVAL): selector.NumberSelector(
+                    selector.NumberSelectorConfig(min=5, max=60, step=5, mode="box")
+                ),
+                vol.Optional(CONF_START_TIME, default=DEFAULT_START_TIME): str,
+                vol.Optional(CONF_END_TIME, default=DEFAULT_END_TIME): str,
+            }),
             errors=errors,
         )
 
@@ -129,5 +83,20 @@ class PVOutputUploaderOptionsFlow(config_entries.OptionsFlow):
 
         return self.async_show_form(
             step_id="init",
-            data_schema=_options_schema(current),
+            data_schema=vol.Schema({
+                vol.Required(CONF_POWER_ENTITY, default=current.get(CONF_POWER_ENTITY, "")): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor"])
+                ),
+                vol.Required(CONF_ENERGY_ENTITY, default=current.get(CONF_ENERGY_ENTITY, "")): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor"])
+                ),
+                vol.Optional(CONF_TEMPERATURE_ENTITY): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["sensor"])
+                ),
+                vol.Optional(CONF_UPLOAD_INTERVAL, default=current.get(CONF_UPLOAD_INTERVAL, DEFAULT_UPLOAD_INTERVAL)): selector.NumberSelector(
+                    selector.NumberSelectorConfig(min=5, max=60, step=5, mode="box")
+                ),
+                vol.Optional(CONF_START_TIME, default=current.get(CONF_START_TIME, DEFAULT_START_TIME)): str,
+                vol.Optional(CONF_END_TIME, default=current.get(CONF_END_TIME, DEFAULT_END_TIME)): str,
+            }),
         )
