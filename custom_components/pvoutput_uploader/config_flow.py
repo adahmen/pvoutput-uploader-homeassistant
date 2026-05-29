@@ -35,7 +35,7 @@ def _build_schema(defaults: dict = {}) -> vol.Schema:
             vol.Required(CONF_ENERGY_ENTITY, default=defaults.get(CONF_ENERGY_ENTITY, "")): selector.EntitySelector(
                 selector.EntitySelectorConfig(domain=["sensor"])
             ),
-            vol.Optional(CONF_TEMPERATURE_ENTITY, default=defaults.get(CONF_TEMPERATURE_ENTITY, "")): selector.EntitySelector(
+            vol.Optional(CONF_TEMPERATURE_ENTITY): selector.EntitySelector(
                 selector.EntitySelectorConfig(domain=["sensor"])
             ),
             vol.Optional(
@@ -65,7 +65,7 @@ def _options_schema(defaults: dict = {}) -> vol.Schema:
             vol.Required(CONF_ENERGY_ENTITY, default=defaults.get(CONF_ENERGY_ENTITY, "")): selector.EntitySelector(
                 selector.EntitySelectorConfig(domain=["sensor"])
             ),
-            vol.Optional(CONF_TEMPERATURE_ENTITY, default=defaults.get(CONF_TEMPERATURE_ENTITY, "")): selector.EntitySelector(
+            vol.Optional(CONF_TEMPERATURE_ENTITY): selector.EntitySelector(
                 selector.EntitySelectorConfig(domain=["sensor"])
             ),
             vol.Optional(
