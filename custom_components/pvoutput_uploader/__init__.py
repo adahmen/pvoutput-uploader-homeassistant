@@ -44,9 +44,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = uploader
 
     interval_minutes = int(config.get(CONF_UPLOAD_INTERVAL, DEFAULT_UPLOAD_INTERVAL))
-    interval = timedelta(minutes=interval_minutes)
 
-    cancel = async_track_time_interval(hass, uploader.async_upload, interval)
+    async def _async_upload_at_interval(now):
+        """Upload only at exact interval boundaries."""
+        minute = now.minute
+        if minute % interval_minutes == 0:
+            await uploader.async_upload(now)
+
+    cancel = async_track_time_interval(
+        hass, _async_upload_at_interval, timedelta(minutes=1)
+    )
     uploader.cancel_interval = cancel
 
     entry.async_on_unload(cancel)
