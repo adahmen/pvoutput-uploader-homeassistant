@@ -148,7 +148,6 @@ class PVOutputUploader:
             "t": current_time.strftime("%H:%M"),
             "v1": int(energy),
             "v2": int(power),
-            "c1": 1,
         }
 
         if temperature is not None:
